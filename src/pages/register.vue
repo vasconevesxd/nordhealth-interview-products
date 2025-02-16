@@ -8,104 +8,170 @@ const formData = ref({
   lastName: '',
   email: '',
   password: '',
-  confirmPassword: ''
+  confirmPassword: '',
+  productUpdates: false,
+  announcements: false,
 })
+
+const showPassword = ref(false)
+const togglePasswordVisibility = () => {
+  showPassword.value = !showPassword.value
+}
 
 const signup = async () => {
   const isRegistered = await register(formData.value)
-  if (isRegistered) router.push({ name: '/movies/[id]', params: { id: 1 } })
+  if (isRegistered) router.push('/success')
 }
 </script>
 
 <template>
-  <div
-    class="mx-auto w-full flex justify-center items-center p-10 text-center -mt-10 min-h-[90vh] h-full"
-  >
-    <Card class="max-w-sm w-full mx-auto h-full">
-      <CardHeader>
-        <CardTitle class="text-2xl"> Register </CardTitle>
-        <CardDescription> Create a new account </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div class="flex flex-col gap-4 mb-4 justify-center items-center">
-          <Button variant="outline" class="w-full"> Register with Google </Button>
-          <Separator label="Or" />
+  <div class="register-container">
+    <provet-card class="register-card">
+      <header>
+        <h2 class="register-title">Register</h2>
+      </header>
+
+      <form @submit.prevent="signup" class="register-form">
+        <provet-input
+          id="username"
+          type="text"
+          label="Username"
+          placeholder="johndoe19"
+          :value="formData.username"
+          @input="formData.username = $event.target.value"
+          required
+          expand="true"
+        ></provet-input>
+
+        <div class="name-fields">
+          <provet-input
+            id="first_name"
+            type="text"
+            label="First Name"
+            placeholder="John"
+            :value="formData.firstName"
+            @input="formData.firstName = $event.target.value"
+            required
+            expand="true"
+          ></provet-input>
+
+          <provet-input
+            id="last_name"
+            type="text"
+            label="Last Name"
+            placeholder="Doe"
+            :value="formData.lastName"
+            @input="formData.lastName = $event.target.value"
+            required
+            expand="true"
+          ></provet-input>
         </div>
-        <form class="grid gap-4" @submit.prevent="signup">
-          <div class="grid gap-2">
-            <Label id="username" class="text-left">Username</Label>
-            <Input
-              id="username"
-              type="text"
-              placeholder="johndoe19"
-              required
-              v-model="formData.username"
-            />
-          </div>
-          <div class="flex flex-col sm:flex-row justify-between gap-4">
-            <div class="grid gap-2">
-              <Label id="first_name" class="text-left">First Name</Label>
-              <Input
-                id="first_name"
-                type="text"
-                placeholder="John"
-                required
-                v-model="formData.firstName"
-              />
-            </div>
-            <div class="grid gap-2">
-              <Label id="last_name" class="text-left">Last Name</Label>
-              <Input
-                id="last_name"
-                type="text"
-                placeholder="Doe"
-                required
-                v-model="formData.lastName"
-              />
-            </div>
-          </div>
-          <div class="grid gap-2">
-            <Label id="email" class="text-left">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              placeholder="johndoe19@example.com"
-              required
-              v-model="formData.email"
-            />
-          </div>
 
-          <div class="grid gap-2">
-            <Label id="password" class="text-left">Password</Label>
-            <Input
-              id="password"
-              type="password"
-              placeholder="*****"
-              autocomplete
-              required
-              v-model="formData.password"
-            />
-          </div>
+        <provet-input
+          id="email"
+          type="email"
+          label="Email"
+          placeholder="johndoe19@example.com"
+          :value="formData.email"
+          @input="formData.email = $event.target.value"
+          required
+          expand="true"
+        ></provet-input>
 
-          <div class="grid gap-2">
-            <Label id="confirm_password" class="text-left">Confirm Password</Label>
-            <Input
-              id="confirm_password"
-              type="password"
-              placeholder="*****"
-              autocomplete
-              required
-              v-model="formData.confirmPassword"
-            />
-          </div>
-          <Button type="submit" class="w-full"> Register </Button>
-          <!-- <Button variant="outline" class="w-full"> Login with Google </Button> -->
-        </form>
-        <div class="mt-4 text-sm text-center">
+        <provet-input
+          id="password"
+          :type="showPassword ? 'text' : 'password'"
+          label="Password"
+          placeholder="*****"
+          autocomplete="new-password"
+          :value="formData.password"
+          @input="formData.password = $event.target.value"
+          required
+          expand="true"
+        >
+          <provet-button type="button" :slot="'end'" @click="togglePasswordVisibility">
+            <provet-icon name="interface-edit-on" v-if="showPassword"></provet-icon>
+            <provet-icon name="interface-edit-off" v-else></provet-icon>
+          </provet-button>
+        </provet-input>
+
+        <provet-input
+          id="confirm_password"
+          type="password"
+          label="Confirm Password"
+          placeholder="*****"
+          autocomplete="new-password"
+          :value="formData.confirmPassword"
+          @input="formData.confirmPassword = $event.target.value"
+          required
+          expand="true"
+        ></provet-input>
+
+        <provet-fieldset label="Notifications" class="notifications">
+          <provet-stack>
+            <provet-checkbox label="Product Updates"></provet-checkbox>
+            <provet-checkbox label="Announcements"></provet-checkbox>
+          </provet-stack>
+        </provet-fieldset>
+
+        <provet-button type="submit" expand="true" class="primary-button"> Register </provet-button>
+      </form>
+
+      <footer>
+        <p class="login-link">
           Already have an account?
-          <RouterLink to="/login" class="underline"> Login </RouterLink>
-        </div>
-      </CardContent>
-    </Card>
+          <RouterLink to="/login" class="underline-link">Login</RouterLink>
+        </p>
+      </footer>
+    </provet-card>
   </div>
 </template>
+
+<style scoped>
+.register-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 90vh;
+  padding: 20px;
+}
+
+.register-card {
+  max-width: 400px;
+  width: 100%;
+}
+
+.register-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.register-description {
+  color: var(--text-secondary);
+}
+
+.name-fields {
+  display: flex;
+  gap: 10px;
+}
+
+.notifications {
+  margin-top: 1rem;
+}
+
+.primary-button {
+  background-color: var(--primary);
+  color: white;
+  margin-top: 1rem;
+}
+
+.login-link {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.underline-link {
+  color: var(--primary);
+  text-decoration: underline;
+}
+</style>

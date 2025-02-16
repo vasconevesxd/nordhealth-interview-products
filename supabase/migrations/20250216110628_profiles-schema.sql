@@ -3,13 +3,11 @@ TRUNCATE auth.users cascade;
 
 create table 
   profiles (
-    id uuid references auth.users on delete cascade not null,
-    created_at timestamptz default now() not null,
-    username text unique not null,
-    full_name text not null,
-    bio text default null,
-    mode text default 'dark' not null,
-    avatar_url text default null,
-    
-    primary key (id)
+    id UUID PRIMARY KEY REFERENCES auth.users (id) ON DELETE CASCADE NOT NULL,
+    created_at TIMESTAMPTZ DEFAULT now() NOT NULL,
+    username TEXT UNIQUE NOT NULL,
+    full_name TEXT NOT NULL,
+    mode TEXT DEFAULT 'dark' NOT NULL,
+    product_updates BOOLEAN DEFAULT FALSE NOT NULL,
+    announcements BOOLEAN DEFAULT FALSE NOT NULL
   );

@@ -8,4 +8,6 @@ export interface RegisterForm extends LoginForm {
   firstName: string
   lastName: string
   confirmPassword: string
+  productUpdates: boolean
+  announcements: boolean
 }

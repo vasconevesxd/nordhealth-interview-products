@@ -1,4 +1,3 @@
-import { usePageStore } from '@/stores/page'
 import { createRouter, createWebHistory } from 'vue-router/auto'
 import { routes } from 'vue-router/auto-routes'
 
@@ -8,15 +7,12 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to) => {
-  const pageStore = usePageStore()
-
-  pageStore.pageData.title = ''
-  pageStore.pageData.canGoBack = false
-
   const authStore = useAuthStore()
-  await authStore.getSession()
+  if (!['/success'].includes(to.path)) {
+    await authStore.getSession()
+  }
 
-  const isAuthPage = ['/login', '/register'].includes(to.path)
+  const isAuthPage = ['/login', '/register', '/success'].includes(to.path)
   if (!authStore.user && !isAuthPage) {
     return {
       name: '/login',
@@ -25,8 +21,7 @@ router.beforeEach(async (to) => {
 
   if (authStore.user && isAuthPage) {
     return {
-      name: '/movies/[id]',
-      params: { id: 1 },
+      name: '/',
     }
   }
 })

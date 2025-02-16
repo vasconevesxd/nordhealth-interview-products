@@ -2,27 +2,22 @@
 import { ref } from 'vue'
 import { login } from '@/services/supabase/supaAuth'
 import { watchDebounced } from '@vueuse/core'
-import { useRouter } from 'vue-router'
+import { RouterLink, useRouter } from 'vue-router'
 
-// Reactive state for form inputs
 const formData = ref({
   email: '',
   password: '',
 })
 
-// Error handling
 const { handleServerError, realtimeErrors, handleLoginForm } = useFormErrors()
 
-// Vue Router
 const router = useRouter()
 
-// Password visibility toggle
 const showPassword = ref(false)
 const togglePasswordVisibility = () => {
   showPassword.value = !showPassword.value
 }
 
-// Debounced form validation
 watchDebounced(
   formData,
   () => {
@@ -78,6 +73,7 @@ const signin = async () => {
           :error="realtimeErrors?.password.length ? realtimeErrors.password[0] : undefined"
         >
           <provet-button
+            type="button"
             :slot="'end'"
             aria-describedby="password-tooltip"
             @click="togglePasswordVisibility"
@@ -88,15 +84,13 @@ const signin = async () => {
         </provet-input>
         <provet-tooltip id="password-tooltip">Show / hide password</provet-tooltip>
 
-        <a href="#" class="forgot-password">Forgot your password?</a>
-
         <provet-button type="submit" expand="true" class="primary-button">Login</provet-button>
       </form>
 
       <footer>
         <p class="register-link">
           Don't have an account?
-          <router-link to="/register" class="underline-link">Register</router-link>
+          <RouterLink to="/register" class="underline-link">Register</RouterLink>
         </p>
       </footer>
     </provet-card>
@@ -147,6 +141,7 @@ const signin = async () => {
 .primary-button {
   background-color: var(--primary);
   color: white;
+  margin-top: 1rem;
 }
 
 .register-link {
