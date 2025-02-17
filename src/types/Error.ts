@@ -6,8 +6,3 @@ export interface CustomError extends Error {
 export interface ExtendedPostgrestError extends PostgrestError {
   statusCode?: number
 }
-export interface TMDBError {
-  status_code?: number
-  status_message: string
-  success?: boolean
-}

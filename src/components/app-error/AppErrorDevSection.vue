@@ -10,7 +10,7 @@ defineProps<{
 
 const error = ref({
   code: 500,
-  msg: 'Ops, something went wrong!'
+  msg: 'Ops, something went wrong!',
 })
 </script>
 
@@ -21,7 +21,7 @@ const error = ref({
     <p class="error__msg">{{ error.msg }}</p>
     <div class="error-footer">
       <p class="error-footer__text">You'll find lots to explore on the home page.</p>
-      <RouterLink :to="{ name: '/movies/[id]', params: { id: 1 } }">
+      <RouterLink to="/">
         <Button class="max-w-36"> Back to homepage </Button>
       </RouterLink>
     </div>

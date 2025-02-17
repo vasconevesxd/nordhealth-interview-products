@@ -1,6 +1,6 @@
 <script setup lang="ts"></script>
 <template>
-  <provet-header slot="header">
+  <provet-header>
     <h1 class="n-typescale-l">Dashboard</h1>
     <template v-slot:end>
       <provet-button variant="primary">

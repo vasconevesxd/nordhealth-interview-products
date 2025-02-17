@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <provet-navigation slot="nav">
+  <provet-navigation>
     <template v-slot:header>
       <provet-dropdown expand>
         <template v-slot:toggle>
